@@ -4,6 +4,10 @@ const nextConfig = {
     bodyParser: {
       sizeLimit: '500mb',
     },
+    responseLimit: false,
+  },
+  experimental: {
+    serverComponentsExternalPackages: ['mongoose'],
   },
 };
 

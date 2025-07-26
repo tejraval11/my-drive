@@ -10,6 +10,11 @@ import { authenticateToken } from '../../../../lib/auth.js';
 
 export async function POST(request) {
   try {
+    // Set timeout for large file uploads
+    const timeout = setTimeout(() => {
+      throw new Error('Upload timeout');
+    }, 300000); // 5 minutes timeout
+
     // Authenticate user
     const authResult = await authenticateToken(request);
     if (authResult) {
@@ -90,6 +95,8 @@ export async function POST(request) {
       }
     }
 
+    clearTimeout(timeout);
+    
     return NextResponse.json({
       message: 'Files uploaded successfully',
       files: uploadedFiles
@@ -98,7 +105,7 @@ export async function POST(request) {
   } catch (error) {
     console.error('File upload error:', error);
     return NextResponse.json(
-      { error: 'File upload failed' },
+      { error: 'File upload failed. Try uploading smaller files or check your connection.' },
       { status: 500 }
     );
   }
