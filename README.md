@@ -17,9 +17,20 @@ A secure file storage application built with Next.js, MongoDB, and Backblaze B2 
 - **Frontend**: Next.js 15, React 19, Tailwind CSS
 - **Backend**: Next.js API Routes
 - **Database**: MongoDB with Mongoose
-- **Storage**: Backblaze B2 (S3-compatible)
+- **Storage**: Backblaze B2 (S3-compatible alternative to AWS S3)
 - **Authentication**: JWT (JSON Web Tokens)
 - **File Upload**: Multer with FormData
+
+## Why Backblaze B2 Instead of AWS S3?
+
+I chose **Backblaze B2** as an alternative to AWS S3 for the following reasons:
+
+- **No Credit Card Required**: Unlike AWS S3 which requires a credit card for account creation, Backblaze B2 allows free account setup without credit card verification
+- **S3-Compatible API**: Backblaze B2 uses the same S3-compatible API, making it a drop-in replacement for AWS S3
+- **Similar Syntax**: The implementation uses the same AWS SDK (`@aws-sdk/client-s3`) with minimal configuration changes
+- **Generous Free Tier**: Backblaze B2 offers 10GB free storage and 1GB daily download
+- **Cost-Effective**: Significantly cheaper than AWS S3 for storage and bandwidth
+- **Easy Migration**: Can easily switch to AWS S3 later by just changing the endpoint and credentials
 
 ## Prerequisites
 
@@ -72,12 +83,14 @@ NEXTAUTH_SECRET=your-nextauth-secret
 NEXTAUTH_URL=http://localhost:3000
 ```
 
-### 4. Backblaze B2 Setup
+### 4. Backblaze B2 Setup (Alternative to AWS S3)
 
-1. Create a Backblaze B2 account
+1. Create a Backblaze B2 account (no credit card required)
 2. Create a new bucket
-3. Generate Application Keys with read/write permissions
+3. Generate Application Keys with read/write permissions (not Master Key)
 4. Note your bucket ID, bucket name, and endpoint URL
+
+**Note**: Use bucket-specific Application Keys, not the Master Application Key, for proper security.
 
 ### 5. Run the Application
 
@@ -210,6 +223,7 @@ my-drive/
 - **File Access Control**: Users can only access their own files
 - **Input Validation**: Server-side validation for all inputs
 - **CORS Protection**: Configured for secure cross-origin requests
+- **Secure Storage**: Files stored in Backblaze B2 with bucket-specific access keys
 
 ## Deployment
 
